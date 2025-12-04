@@ -1,0 +1,15 @@
+DISCLAIMER
+
+This repository is intended for EDUCATIONAL and DEFENSIVE SECURITY purposes only.
+
+- All wireless security tests described here must be performed ONLY on networks
+  that you own or have explicit written permission to test.
+- Do NOT use any of the techniques, commands, or workflows from this project
+  against unknown, public, or third-party networks.
+
+Unauthorized access to computer networks is illegal and can lead to criminal
+charges. The author of this repository is not responsible for any misuse of
+the information or techniques documented here.
+
+By using this project, you agree to follow all applicable laws and regulations
+in your country and to act ethically and responsibly.
