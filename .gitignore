@@ -1,0 +1,23 @@
+# Logs and temporary files
+*.log
+*.tmp
+
+# aircrack / capture files (never upload real captures)
+*.cap
+*.pcap
+*.netxml
+*.ivs
+*.csv
+
+# Python / compiled / cache (future use)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.o
+*.out
+
+# Custom folders (local use only)
+captures/
+results/
+temp/
